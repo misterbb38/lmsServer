@@ -1,8 +1,5 @@
-// controllers/courseController.js
 
 const Course = require('../models/Course');
-const Chapter = require('../models/Chapter');
-const Lesson = require('../models/Lesson');
 
 exports.createCourse = async (req, res) => {
   try {
@@ -16,54 +13,23 @@ exports.createCourse = async (req, res) => {
     });
 
     await cours.save();
-    res.status(201).json({ message: 'Cours créé avec succès', cours });
+    return res.status(201).json({ message: 'Cours créé avec succès', cours });
   } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur', error });
+    console.error('Erreur lors de la création du cours:', error);
+    return res.status(500).json({ message: 'Erreur serveur', error });
   }
 };
 
-exports.addChapter = async (req, res) => {
+exports.getAllCourses = async (req, res) => {
   try {
-    const { titre, coursId } = req.body;
+    const courses = await Course.find()
+      .populate('chapitres')
+      .populate('professeur', '-motDePasse');
 
-    const chapitre = new Chapter({
-      titre,
-      cours: coursId,
-    });
-
-    await chapitre.save();
-
-    // Ajouter le chapitre au cours
-    const cours = await Course.findById(coursId);
-    cours.chapitres.push(chapitre._id);
-    await cours.save();
-
-    res.status(201).json({ message: 'Chapitre ajouté avec succès', chapitre });
+    return res.status(200).json(courses);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur', error });
-  }
-};
-
-exports.addLesson = async (req, res) => {
-  try {
-    const { titre, contenu, chapitreId } = req.body;
-
-    const lecon = new Lesson({
-      titre,
-      contenu,
-      chapitre: chapitreId,
-    });
-
-    await lecon.save();
-
-    // Ajouter la leçon au chapitre
-    const chapitre = await Chapter.findById(chapitreId);
-    chapitre.lecons.push(lecon._id);
-    await chapitre.save();
-
-    res.status(201).json({ message: 'Leçon ajoutée avec succès', lecon });
-  } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur', error });
+    console.error('Erreur lors de la récupération des cours:', error);
+    return res.status(500).json({ message: 'Erreur serveur', error });
   }
 };
 
@@ -79,8 +45,9 @@ exports.getCourseById = async (req, res) => {
       return res.status(404).json({ message: 'Cours non trouvé' });
     }
 
-    res.json(cours);
+    return res.status(200).json(cours);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur serveur', error });
+    console.error('Erreur lors de la récupération du cours par ID:', error);
+    return res.status(500).json({ message: 'Erreur serveur', error });
   }
 };

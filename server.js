@@ -14,7 +14,9 @@ connectDB();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors(
+    
+));
 
 // Importer les routes
 const authRoutes = require('./routes/authRoutes');
@@ -22,6 +24,8 @@ const userRoutes = require('./routes/userRoutes');
 const teacherRoutes = require('./routes/teacherRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const courseRoutes = require('./routes/courseRoutes');
+const chapterRoutes = require('./routes/chapterRoutes');
+const lessonRoutes = require('./routes/lessonRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const exerciseRoutes = require('./routes/exerciseRoutes');
 const fileRoutes = require('./routes/fileRoutes');
@@ -33,10 +37,13 @@ app.use('/api/users', userRoutes);
 app.use('/api/teachers', teacherRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/chapters', chapterRoutes);
+app.use('/api/lessons', lessonRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/exercises', exerciseRoutes);
 app.use('/api/files', fileRoutes);
 app.use('/api/offers', offerRoutes);
+
 
 // Démarrer le serveur
 const PORT = process.env.PORT || 5000;

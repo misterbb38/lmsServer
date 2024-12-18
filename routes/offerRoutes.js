@@ -10,6 +10,6 @@ const roleCheck = require('../middleware/roleCheck');
 router.post('/', auth, roleCheck('teacher'), offerController.createOffer);
 
 // Obtenir les offres pour les élèves ayant réussi la formation
-router.get('/', auth, roleCheck('student'), offerController.getOffersForStudents);
+router.get('/', auth, roleCheck(''), offerController.getOffersForStudents);
 
 module.exports = router;

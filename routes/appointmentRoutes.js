@@ -8,7 +8,7 @@ const roleCheck = require('../middleware/roleCheck');
 
 // Créer un rendez-vous (Exclure les étudiants)
 router.post(
-  '/',
+  '/',  
   auth,
  
   appointmentController.createAppointment

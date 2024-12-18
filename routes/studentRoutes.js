@@ -9,4 +9,7 @@ const roleCheck = require('../middleware/roleCheck');
 // Obtenir le profil de l'élève
 router.get('/me', auth, roleCheck('student'), studentController.getStudentProfile);
 
+// Obtenir les cours qui concernent l'élève connecté
+router.get('/my-courses', auth, studentController.getCoursesForStudent);
+
 module.exports = router;

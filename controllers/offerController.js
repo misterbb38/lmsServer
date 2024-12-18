@@ -25,7 +25,7 @@ exports.getOffersForStudents = async (req, res) => {
     const Student = require('../models/Student');
     const eleve = await Student.findOne({ user: req.user.id });
 
-    if (!eleve || !eleve.formationReussie) {
+    if (!eleve) {
       return res.status(403).json({ message: 'Accès refusé aux offres' });
     }
 

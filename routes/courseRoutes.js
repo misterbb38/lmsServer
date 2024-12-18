@@ -1,21 +1,16 @@
-// routes/courseRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const courseController = require('../controllers/courseController');
 const auth = require('../middleware/auth');
 const roleCheck = require('../middleware/roleCheck');
 
-// Créer un cours
-router.post('/', auth, roleCheck('teacher'), courseController.createCourse);
+// Créer un cours (professeur)
+router.post('/', auth,  courseController.createCourse);
 
-// Ajouter un chapitre
-router.post('/chapters', auth, roleCheck('teacher'), courseController.addChapter);
+// Obtenir tous les cours (admin ou professeur)
+router.get('/', auth, courseController.getAllCourses);
 
-// Ajouter une leçon
-router.post('/lessons', auth, roleCheck('teacher'), courseController.addLesson);
-
-// Obtenir un cours par ID
+// Obtenir un cours par ID (tous rôles, par exemple)
 router.get('/:coursId', auth, courseController.getCourseById);
 
 module.exports = router;
